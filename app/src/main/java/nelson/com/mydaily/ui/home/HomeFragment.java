@@ -17,16 +17,30 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 import java.util.Random;
 
 import nelson.com.mydaily.R;
 import nelson.com.mydaily.adapter.IndexAdapter;
 import nelson.com.mydaily.bean.db.DetailBean;
+import nelson.com.mydaily.bean.event.EditBean;
+import nelson.com.mydaily.db.Opearations;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private IndexAdapter indexAdapter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -39,10 +53,31 @@ public class HomeFragment extends Fragment {
         homeViewModel.getData().observe(this, new Observer<List<DetailBean>>() {
             @Override
             public void onChanged(List<DetailBean> detailBeans) {
-                IndexAdapter indexAdapter = new IndexAdapter(detailBeans);
-                recyclerView.setAdapter(indexAdapter);
+                if (indexAdapter == null){
+                    indexAdapter = new IndexAdapter(detailBeans);
+                    recyclerView.setAdapter(indexAdapter);
+                } else {
+                    indexAdapter.notifyDataSetChanged();
+                }
+
             }
         });
         return root;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshAdapter(EditBean editBean){
+        if (editBean != null && editBean.isEdit()){
+            if (indexAdapter != null){
+                indexAdapter.notifyDataSetChanged();
+            }
+           // homeViewModel.getData().getValue().addAll(Opearations.getInstance().getList());
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }
