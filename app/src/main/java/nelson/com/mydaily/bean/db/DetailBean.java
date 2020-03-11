@@ -16,6 +16,24 @@ public class DetailBean extends RealmObject implements Serializable {
     private String typeName;
     private float money;
     private long time;
+    private int year;
+    private int month;
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
 
     public String getUuid() {
         return uuid;

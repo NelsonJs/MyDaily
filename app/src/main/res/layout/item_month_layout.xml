@@ -9,10 +9,10 @@
         android:layout_marginBottom="14dp"
         android:layout_marginTop="14dp"
         android:textSize="16sp"
-        tools:text="衣物"
+        android:text="三月"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/nameTv"
+        android:id="@+id/monthTv"
         android:layout_marginLeft="15dp"
         />
     <TextView
@@ -20,7 +20,7 @@
         android:layout_alignBottom="@id/nameTv"
         android:layout_alignTop="@id/nameTv"
         android:layout_toRightOf="@id/nameTv"
-        tools:text="25.6"
+        android:text="256元"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/moneyTv"
@@ -31,7 +31,7 @@
         android:layout_alignBottom="@id/nameTv"
         android:layout_alignTop="@id/nameTv"
         android:layout_marginRight="15dp"
-        tools:text="2018/5/2"
+        android:text="+"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         />
     <View
         android:layout_alignLeft="@id/nameTv"
-        android:layout_below="@id/nameTv"
+        android:layout_below="@id/monthTv"
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
         android:background="@color/e5e5e5"/>

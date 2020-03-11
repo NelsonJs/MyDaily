@@ -28,17 +28,19 @@ public class Opearations {
         return instance;
     }
 
-    public void saveBill(int idType,String typeName,float money,long time){
+    public void saveBill(int idType,String typeName,float money,long time,int year,int month){
         BaseApp.realm.beginTransaction();
         DetailBean detailBean = BaseApp.realm.createObject(DetailBean.class);
         detailBean.setIdType(idType);
         detailBean.setMoney(money);
         detailBean.setTypeName(typeName);
         detailBean.setTime(time);
+        detailBean.setYear(year);
+        detailBean.setMonth(month);
         BaseApp.realm.commitTransaction();
     }
 
-    public void updateBill(final String uuid, final int idType, final String typeName, final float money, final long time){
+    public void updateBill(final String uuid, final int idType, final String typeName, final float money, final long time, final int year, final int month){
         BaseApp.realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -49,6 +51,8 @@ public class Opearations {
                 bean.setTime(time);
                 bean.setMoney(money);
                 bean.setTypeName(typeName);
+                bean.setYear(year);
+                bean.setMonth(month);
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override

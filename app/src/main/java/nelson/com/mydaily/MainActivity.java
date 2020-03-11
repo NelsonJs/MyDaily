@@ -242,11 +242,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
         }
         if (isUpdate && !TextUtil.isEmpty(uuid)){
-            Opearations.getInstance().updateBill(uuid,index,typeName,money,time);
+            Opearations.getInstance().updateBill(uuid,index,typeName,money,time,calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)+1));
             isUpdate = false;
             uuid = null;
         } else {
-            Opearations.getInstance().saveBill(index,typeName,money,time);
+            Opearations.getInstance().saveBill(index,typeName,money,time,calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)+1));
         }
         Toast.makeText(this,"已保存",Toast.LENGTH_SHORT).show();
         moneyEt.postDelayed(new Runnable() {

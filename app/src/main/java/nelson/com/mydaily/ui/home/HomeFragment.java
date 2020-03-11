@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -21,11 +22,17 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import nelson.com.mydaily.R;
+import nelson.com.mydaily.YearBean;
 import nelson.com.mydaily.adapter.IndexAdapter;
+import nelson.com.mydaily.adapter.YearExpandableAdapter;
+import nelson.com.mydaily.bean.MonthBean;
 import nelson.com.mydaily.bean.db.DetailBean;
 import nelson.com.mydaily.bean.event.EditBean;
 import nelson.com.mydaily.db.Opearations;
@@ -33,7 +40,7 @@ import nelson.com.mydaily.db.Opearations;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private IndexAdapter indexAdapter;
+    //private IndexAdapter indexAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +53,7 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
+        /*final RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(manager);
@@ -61,17 +68,34 @@ public class HomeFragment extends Fragment {
                 }
 
             }
-        });
+        });*/
+        ExpandableListView expandableListView = root.findViewById(R.id.expandableListView);
+        List<YearBean> yearBeans = new ArrayList<>();
+        Map<Integer,List<MonthBean>> map = new HashMap<>();
+        for (int i = 0; i < 5; i++) {
+            List<MonthBean> monthBeans = new ArrayList<>();
+            for (int j = 0; j < 7; j++) {
+                MonthBean monthBean = new MonthBean();
+                monthBeans.add(monthBean);
+            }
+            map.put(i,monthBeans);
+            YearBean yearBean = new YearBean();
+            yearBeans.add(yearBean);
+        }
+
+        YearExpandableAdapter yearExpandableAdapter = new YearExpandableAdapter(yearBeans,map);
+        expandableListView.setAdapter(yearExpandableAdapter);
+
+
         return root;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refreshAdapter(EditBean editBean){
         if (editBean != null && editBean.isEdit()){
-            if (indexAdapter != null){
+            /*if (indexAdapter != null){
                 indexAdapter.notifyDataSetChanged();
-            }
-           // homeViewModel.getData().getValue().addAll(Opearations.getInstance().getList());
+            }*/
         }
     }
 
